@@ -154,7 +154,8 @@ def KeyPress(window_title, keystrokes):
 
         # Activate the window
         window.activate()
-
+        
+        time.sleep(.02)
         PressKey(Keycode[keystrokes])
         time.sleep(.02)
         ReleaseKey(Keycode[keystrokes])
