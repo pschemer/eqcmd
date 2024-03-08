@@ -8,6 +8,7 @@ Make sure to adjust the chat_log_file_path and the paths in the observer accordi
 import time
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
+import os
 import keyboard
 import pyautogui
 import pygetwindow as gw
@@ -44,26 +45,29 @@ class ChatLogHandler(FileSystemEventHandler):
     def __init__(self, chat_log_file_path):
         super().__init__()
         self.chat_log_file_path = chat_log_file_path
+        self.last_position = os.path.getsize(chat_log_file_path)
 
     def on_modified(self, event):
-        print("Modification detected")
         if event.is_directory:
             return
         with open(self.chat_log_file_path, 'r') as file:
+            file.seek(self.last_position)
             new_entries = file.readlines()
             if new_entries:
-                print("New entries...")
                 for entry in new_entries:
+                    entry.strip()
                     for event_text, function in event_functions.items():
                         if event_text in entry:
                             print(f"event '{event_text}' found in new entry")
                             function()
+                # Update the last processed position
+                self.last_position = file.tell()
 
 def start_monitoring(chat_log_file_path):
     print(f"Trying to monitor '{chat_log_file_path}'")
     event_handler = ChatLogHandler(chat_log_file_path)
     observer = Observer()
-    observer.schedule(event_handler, path='.', recursive=False)
+    observer.schedule(event_handler, path=os.path.dirname(chat_log_file_path), recursive=False)
     observer.start()
     print(f"Starting monitoring on '{chat_log_file_path}'")
     send_keystrokes('EverQuest', 'h')
