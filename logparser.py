@@ -10,24 +10,11 @@ from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 import os
 import keyboard
-import pyautogui
-import pygetwindow as gw
+import keystrokes
 
 def send_keystrokes(window_title, keystrokes):
-    print(f"Sending keystrokes '{keystrokes}' to window '{window_title}'")
-
-    # Implement the logic to send keystrokes to the specified window
-    try:
-        # Get the window handle based on the window title
-        window = gw.getWindowsWithTitle(window_title)[0]
-
-        # Activate the window
-        window.activate()
-
-        # Send keystrokes
-        pyautogui.write(keystrokes)
-    except Exception as e:
-        print(f"Error sending keystrokes to window '{window_title}': {e}")
+    print("send a key!")
+    #keystrokes.KeyPress(window_title, keystrokes)   
 
 def helloPat():
     send_keystrokes('EverQuest', '1')
