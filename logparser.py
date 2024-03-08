@@ -10,11 +10,10 @@ from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 import os
 import keyboard
-import keystrokes
+import sendkeys
 
 def send_keystrokes(window_title, keystrokes):
-    print("send a key!")
-    #keystrokes.KeyPress(window_title, keystrokes)   
+    sendkeys.KeyPress(window_title, keystrokes)   
 
 def helloPat():
     send_keystrokes('EverQuest', '1')
