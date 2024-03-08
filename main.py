@@ -1,4 +1,5 @@
-import logparser  # Assuming logparser.py is in the same directory
+import os
+import logparser
 
 def get_chat_log_path():
     while True:
