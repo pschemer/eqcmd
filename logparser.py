@@ -44,18 +44,15 @@ class ChatLogHandler(FileSystemEventHandler):
                     entry.strip()
                     for event_text, function in event_functions.items():
                         if event_text in entry:
-                            print(f"event '{event_text}' found in new entry")
                             function(entry)
                 # Update the last processed position
                 self.last_position = file.tell()
 
 def start_monitoring(chat_log_file_path):
-    print(f"Trying to monitor '{chat_log_file_path}'")
     event_handler = ChatLogHandler(chat_log_file_path)
     observer = Observer()
     observer.schedule(event_handler, path=os.path.dirname(chat_log_file_path), recursive=False)
     observer.start()
-    print(f"Starting monitoring on '{chat_log_file_path}'")
     send_keystrokes('EverQuest', 'h')
     try:
         while True:

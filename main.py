@@ -18,6 +18,30 @@ def get_chat_log_path_from_settings():
 
         return None
 
+def addEvent(args):
+    logparser.event_functions[args[0]] = args[1]
+    print(f"add event '{args}'")
+
+def delEvent(args):
+    if args[0] in logparser.event_functions.keys():
+        del(logparser.event_functions[args[0]])
+    print(f"del event '{args}'")
+
+def printEvents(args):
+    for event in logparser.event_functions.items():
+        print(event)
+
+menuItems = {
+    "add":addEvent,
+    "del":delEvent,
+    "print":printEvents,
+}
+
+def printmenu():
+    print(f"Menu Items:")
+    for item in menuItems.keys():
+        print(item)
+
 def main():
     chat_log_file_path = get_chat_log_path_from_settings()
 
@@ -27,10 +51,23 @@ def main():
 
     try:
         # Main app logic
-        time.sleep(1)
+        while True:
+            printmenu()
+            command = []
+            user_input = input(": ").strip()
+            if user_input.lower() == 'done':
+                log_parser_thread.join()
+                print("Parser stopped")
+                break
+            command.append(user_input)
+            if command[0] in menuItems.keys():
+                menuItems[command[0]](command[1:])
+        exit
+        
     except KeyboardInterrupt:
         # Stop the log parser when main program is interrupted
         log_parser_thread.join()
+        print("Parser stopped")
 
 if __name__ == "__main__":
     main()
