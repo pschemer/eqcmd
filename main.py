@@ -3,19 +3,22 @@ import logparser
 import time
 import threading
 
-def get_chat_log_path():
-    return 'E:\EQ\EQ-Test\Logs\eqlog_Fatguylilcoat_test.txt'
-    '''
-    while True:
-        chat_log_path = input("Enter the path to the chat log file: ")
-        if os.path.exists(chat_log_path):
-            return chat_log_path
+def get_chat_log_path_from_settings():
+    settings_file_path = "settings.ini"
+
+    if os.path.exists(settings_file_path):
+        config = configparser.ConfigParser()
+        config.read(settings_file_path)
+
+        if "LOGFILE" in config["DEFAULT"]:
+            return config["DEFAULT"]["LOGFILE"]
         else:
-            print("Invalid path. Please enter a valid path.")
-    '''
+            print("Error: settings.ini not found.")
+
+        return None
 
 def main():
-    chat_log_file_path = get_chat_log_path()
+    chat_log_file_path = get_chat_log_path_from_settings()
 
     # Create a thread for logparser.py
     log_parser_thread = threading.Thread(target=logparser.start_monitoring, args=(chat_log_file_path,))
