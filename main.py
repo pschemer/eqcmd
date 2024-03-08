@@ -2,6 +2,7 @@ import os
 import logparser
 import time
 import threading
+import configparser
 
 def get_chat_log_path_from_settings():
     settings_file_path = "settings.ini"
