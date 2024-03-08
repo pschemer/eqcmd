@@ -15,10 +15,10 @@ import sendkeys
 def send_keystrokes(window_title, keystrokes):
     sendkeys.KeyPress(window_title, keystrokes)   
 
-def helloPat():
+def helloPat(text):
     send_keystrokes('EverQuest', '1')
 
-def goodbyeSam():
+def goodbyeSam(text):
     send_keystrokes('EverQuest', '2')
 
 event_functions = {
@@ -45,7 +45,7 @@ class ChatLogHandler(FileSystemEventHandler):
                     for event_text, function in event_functions.items():
                         if event_text in entry:
                             print(f"event '{event_text}' found in new entry")
-                            function()
+                            function(entry)
                 # Update the last processed position
                 self.last_position = file.tell()
 
